@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codurance.Domain", "Src\Codurance.Domain\Codurance.Domain.csproj", "{E4C1569A-B708-47A2-A036-50F6EA1F62D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Information", "Information", "{8AEAB47C-F0AF-4013-8CA3-D0D85434B629}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codurance.Domain.Unit.Tests", "Tests\Codurance.Domain.Unit.Tests\Codurance.Domain.Unit.Tests.csproj", "{6439B0CA-9FAA-4D62-AE89-6B8C95FD7F4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codurance.Domain.Autofac", "Src\Codurance.Domain.Autofac\Codurance.Domain.Autofac.csproj", "{86EAB852-B664-46E3-8418-FCAB440999AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe", "Src\TicTacToe\TicTacToe.csproj", "{8CC6BC63-0C32-4323-BCF4-515CE37F07A6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4C1569A-B708-47A2-A036-50F6EA1F62D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4C1569A-B708-47A2-A036-50F6EA1F62D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4C1569A-B708-47A2-A036-50F6EA1F62D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4C1569A-B708-47A2-A036-50F6EA1F62D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6439B0CA-9FAA-4D62-AE89-6B8C95FD7F4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6439B0CA-9FAA-4D62-AE89-6B8C95FD7F4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6439B0CA-9FAA-4D62-AE89-6B8C95FD7F4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6439B0CA-9FAA-4D62-AE89-6B8C95FD7F4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86EAB852-B664-46E3-8418-FCAB440999AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86EAB852-B664-46E3-8418-FCAB440999AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86EAB852-B664-46E3-8418-FCAB440999AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86EAB852-B664-46E3-8418-FCAB440999AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CC6BC63-0C32-4323-BCF4-515CE37F07A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CC6BC63-0C32-4323-BCF4-515CE37F07A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CC6BC63-0C32-4323-BCF4-515CE37F07A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CC6BC63-0C32-4323-BCF4-515CE37F07A6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {870DB420-A742-4857-8B0C-2C219FC86A64}
+	EndGlobalSection
+EndGlobal

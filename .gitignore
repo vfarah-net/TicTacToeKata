@@ -286,3 +286,7 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+/Output-Build.txt
+/Src/Codurance.Domain/Codurance.Domain.v3.ncrunchproject
+/Tests/Codurance.Domain.Unit.Tests/Codurance.Domain.Unit.Tests.v3.ncrunchproject
+/Codurance.TicTacToesTest.v3.ncrunchsolution

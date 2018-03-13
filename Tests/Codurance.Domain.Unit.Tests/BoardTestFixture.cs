@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 
 namespace Codurance.Domain.Unit.Tests
@@ -39,7 +38,7 @@ namespace Codurance.Domain.Unit.Tests
         public class AndMakingMovesOnTheBoard : WhenUsingTheBoardToPlayTicTacToe
         {
             [Test]
-            public void ShouldSwapPlayerForEverySuccessFullMove()
+            public void ShouldSwapPlayerForEverySuccessfullMove()
             {
                 IBoard subject = new Board();
                 var activePlayer = subject.ActivePlayer;
@@ -51,7 +50,7 @@ namespace Codurance.Domain.Unit.Tests
             }
 
             [Test]
-            public void ShouldRaiseAPlayerSwappedEventForSuccessFullMove()
+            public void ShouldRaiseAPlayerSwappedEventForSuccessfullMove()
             {
                 IBoard subject = new Board();
                 IPlayer currentPlayer = null;
@@ -107,10 +106,10 @@ namespace Codurance.Domain.Unit.Tests
 
                 MakeTheTopRowOfZerosTheWinner(subject);
 
-                gameFinishedArgument.Should().NotBeNull();
                 gameFinishedArgument.Result.Should().Be(GameResult.Win);
                 gameFinishedArgument.Winner.Should().NotBeNull();
                 gameFinishedArgument.Winner.Team.Should().Be(Team.Zero);
+                gameFinishedArgument.LineWin.Should().Be(LineWin.TopHorizontal);
             }
 
             [Test]
@@ -125,10 +124,9 @@ namespace Codurance.Domain.Unit.Tests
 
                 MakeTheMiddleRowOfZerosTheWinner(subject);
 
-                gameFinishedArgument.Should().NotBeNull();
                 gameFinishedArgument.Result.Should().Be(GameResult.Win);
-                gameFinishedArgument.Winner.Should().NotBeNull();
                 gameFinishedArgument.Winner.Team.Should().Be(Team.Zero);
+                gameFinishedArgument.LineWin.Should().Be(LineWin.MiddleHorizontal);
             }
 
             [Test]
@@ -143,37 +141,51 @@ namespace Codurance.Domain.Unit.Tests
 
                 MakeTheBottomRowOfZerosTheWinner(subject);
 
-                gameFinishedArgument.Should().NotBeNull();
                 gameFinishedArgument.Result.Should().Be(GameResult.Win);
-                gameFinishedArgument.Winner.Should().NotBeNull();
                 gameFinishedArgument.Winner.Team.Should().Be(Team.Zero);
+                gameFinishedArgument.LineWin.Should().Be(LineWin.BottomHorizontal);
             }
 
             private void MakeTheBottomRowOfZerosTheWinner(IBoard subject)
             {
+                string expectedBottomRowWinnerBoard =
+                    "- | - | -".NewRow() +
+                    "X | X | -".NewRow() +
+                    "0 | 0 | 0".NewRow();
                 subject.Move(BoardPosition.BottomLeft);
                 subject.Move(BoardPosition.MiddleLeft);
                 subject.Move(BoardPosition.BottomMiddle);
                 subject.Move(BoardPosition.Middle);
                 subject.Move(BoardPosition.BottomRight);
+                expectedBottomRowWinnerBoard.Should().Be(subject.ToString());
             }
 
             private void MakeTheMiddleRowOfZerosTheWinner(IBoard subject)
             {
+                string expectedMiddleRowWinnerBoard =
+                    "X | X | -".NewRow() +
+                    "0 | 0 | 0".NewRow() +
+                    "- | - | -".NewRow();
                 subject.Move(BoardPosition.MiddleLeft);
                 subject.Move(BoardPosition.TopLeft);
                 subject.Move(BoardPosition.Middle);
                 subject.Move(BoardPosition.TopMiddle);
                 subject.Move(BoardPosition.MiddleRight);
+                expectedMiddleRowWinnerBoard.Should().Be(subject.ToString());
             }
 
             private static void MakeTheTopRowOfZerosTheWinner(IBoard subject)
             {
+                string expectedTopRowWinnerBoard =
+                    "0 | 0 | 0".NewRow() +
+                    "X | X | -".NewRow() +
+                    "- | - | -".NewRow();
                 subject.Move(BoardPosition.TopLeft);
                 subject.Move(BoardPosition.MiddleLeft);
                 subject.Move(BoardPosition.TopMiddle);
                 subject.Move(BoardPosition.Middle);
                 subject.Move(BoardPosition.TopRight);
+                expectedTopRowWinnerBoard.Should().Be(subject.ToString());
             }
         }
 
@@ -192,10 +204,9 @@ namespace Codurance.Domain.Unit.Tests
 
                 MakeTheLeftVerticalRowOfZerosTheWinner(subject);
 
-                gameFinishedArgument.Should().NotBeNull();
                 gameFinishedArgument.Result.Should().Be(GameResult.Win);
-                gameFinishedArgument.Winner.Should().NotBeNull();
                 gameFinishedArgument.Winner.Team.Should().Be(Team.Zero);
+                gameFinishedArgument.LineWin.Should().Be(LineWin.LeftVertical);
             }
 
             [Test]
@@ -210,10 +221,9 @@ namespace Codurance.Domain.Unit.Tests
 
                 MakeTheMiddleVerticalRowOfZerosTheWinner(subject);
 
-                gameFinishedArgument.Should().NotBeNull();
                 gameFinishedArgument.Result.Should().Be(GameResult.Win);
-                gameFinishedArgument.Winner.Should().NotBeNull();
                 gameFinishedArgument.Winner.Team.Should().Be(Team.Zero);
+                gameFinishedArgument.LineWin.Should().Be(LineWin.MiddleVertical);
             }
 
             [Test]
@@ -228,37 +238,51 @@ namespace Codurance.Domain.Unit.Tests
 
                 MakeTheRightVerticalRowOfZerosTheWinner(subject);
 
-                gameFinishedArgument.Should().NotBeNull();
                 gameFinishedArgument.Result.Should().Be(GameResult.Win);
-                gameFinishedArgument.Winner.Should().NotBeNull();
                 gameFinishedArgument.Winner.Team.Should().Be(Team.Zero);
+                gameFinishedArgument.LineWin.Should().Be(LineWin.RightVertical);
             }
 
             private void MakeTheRightVerticalRowOfZerosTheWinner(IBoard subject)
             {
+                string expectedRightVerticalWinnerBoard =
+                    "- | X | 0".NewRow() +
+                    "- | X | 0".NewRow() +
+                    "- | - | 0".NewRow();
                 subject.Move(BoardPosition.TopRight);
                 subject.Move(BoardPosition.Middle);
                 subject.Move(BoardPosition.MiddleRight);
                 subject.Move(BoardPosition.TopMiddle);
                 subject.Move(BoardPosition.BottomRight);
+                expectedRightVerticalWinnerBoard.Should().Be(subject.ToString());
             }
 
             private void MakeTheMiddleVerticalRowOfZerosTheWinner(IBoard subject)
             {
+                string expectedMiddleVerticalWinnerBoard =
+                    "X | 0 | -".NewRow() +
+                    "X | 0 | -".NewRow() +
+                    "- | 0 | -".NewRow();
                 subject.Move(BoardPosition.TopMiddle);
                 subject.Move(BoardPosition.TopLeft);
                 subject.Move(BoardPosition.Middle);
                 subject.Move(BoardPosition.MiddleLeft);
                 subject.Move(BoardPosition.BottomMiddle);
+                expectedMiddleVerticalWinnerBoard.Should().Be(subject.ToString());
             }
 
             private static void MakeTheLeftVerticalRowOfZerosTheWinner(IBoard subject)
             {
+                string expectedRightVerticalWinnerBoard =
+                    "0 | X | -".NewRow() +
+                    "0 | X | -".NewRow() +
+                    "0 | - | -".NewRow();
                 subject.Move(BoardPosition.TopLeft);
                 subject.Move(BoardPosition.Middle);
                 subject.Move(BoardPosition.MiddleLeft);
                 subject.Move(BoardPosition.TopMiddle);
                 subject.Move(BoardPosition.BottomLeft);
+                expectedRightVerticalWinnerBoard.Should().Be(subject.ToString());
             }
         }
 
@@ -277,10 +301,9 @@ namespace Codurance.Domain.Unit.Tests
 
                 MakeTheLeftDiagonalRowOfZerosTheWinner(subject);
 
-                gameFinishedArgument.Should().NotBeNull();
                 gameFinishedArgument.Result.Should().Be(GameResult.Win);
-                gameFinishedArgument.Winner.Should().NotBeNull();
                 gameFinishedArgument.Winner.Team.Should().Be(Team.Zero);
+                gameFinishedArgument.LineWin.Should().Be(LineWin.LeftDiagonal);
             }
 
             [Test]
@@ -295,23 +318,30 @@ namespace Codurance.Domain.Unit.Tests
 
                 MakeTheRightDiagonalRowOfZerosTheWinner(subject);
 
-                gameFinishedArgument.Should().NotBeNull();
                 gameFinishedArgument.Result.Should().Be(GameResult.Win);
-                gameFinishedArgument.Winner.Should().NotBeNull();
                 gameFinishedArgument.Winner.Team.Should().Be(Team.Zero);
+                gameFinishedArgument.LineWin.Should().Be(LineWin.RightDiagonal);
             }
 
             private void MakeTheRightDiagonalRowOfZerosTheWinner(IBoard subject)
             {
-                subject.Move(BoardPosition.BottomLeft);
+                string expectedRightDiagonalWinnerBoard =
+                    "X | - | 0".NewRow() +
+                    "X | 0 | -".NewRow() +
+                    "0 | - | -".NewRow();
+                subject.Move(BoardPosition.TopRight);
                 subject.Move(BoardPosition.MiddleLeft);
-                subject.Move(BoardPosition.BottomMiddle);
                 subject.Move(BoardPosition.Middle);
-                subject.Move(BoardPosition.BottomRight);
+                subject.Move(BoardPosition.TopLeft);
+                subject.Move(BoardPosition.BottomLeft);
             }
 
             private static void MakeTheLeftDiagonalRowOfZerosTheWinner(IBoard subject)
             {
+                string expectedLeftDiagonalWinnerBoard =
+                    "0 | X | X".NewRow() +
+                    "- | 0 | -".NewRow() +
+                    "- | - | 0".NewRow();
                 subject.Move(BoardPosition.TopLeft);
                 subject.Move(BoardPosition.TopMiddle);
                 subject.Move(BoardPosition.Middle);
@@ -328,11 +358,6 @@ namespace Codurance.Domain.Unit.Tests
             {
                 IBoard subject = new Board();
                 GameFinishedArgs gameFinishedArgument = null;
-                string expectedTieBoard = 
-                    "0 | X | 0" + Environment.NewLine +
-                    "0 | 0 | X" + Environment.NewLine +
-                    "X | 0 | X" + Environment.NewLine;
-
                 subject.GameFinished += (GameFinishedArgs argument) =>
                 {
                     gameFinishedArgument = argument;
@@ -340,27 +365,26 @@ namespace Codurance.Domain.Unit.Tests
 
                 SetupTheBoardForADraw(subject);
 
-                expectedTieBoard.Should().Be(subject.ToString());
-                gameFinishedArgument.Should().NotBeNull();
                 gameFinishedArgument.Result.Should().Be(GameResult.Draw);
-                gameFinishedArgument.Winner.Should().BeNull();                
+                gameFinishedArgument.LineWin.Should().Be(LineWin.None);
             }
 
             private void SetupTheBoardForADraw(IBoard subject)
             {
-                // Set the board to visually look like :
-                //  0 | X | 0
-                //  0 | 0 | X
-                //  X | 0 | X
-                subject.Move(BoardPosition.Middle);         // 0
-                subject.Move(BoardPosition.TopMiddle);      // X 
-                subject.Move(BoardPosition.TopRight);       // 0 
-                subject.Move(BoardPosition.BottomRight);    // X
-                subject.Move(BoardPosition.MiddleLeft);     // 0
-                subject.Move(BoardPosition.MiddleRight);    // X
-                subject.Move(BoardPosition.BottomMiddle);   // 0
-                subject.Move(BoardPosition.BottomLeft);     // X
-                subject.Move(BoardPosition.TopLeft);        // 0
+                string expectedTieBoard =
+                    "0 | X | 0".NewRow() +
+                    "0 | 0 | X".NewRow() +
+                    "X | 0 | X".NewRow();
+                subject.Move(BoardPosition.Middle);
+                subject.Move(BoardPosition.TopMiddle);
+                subject.Move(BoardPosition.TopRight);
+                subject.Move(BoardPosition.BottomRight);
+                subject.Move(BoardPosition.MiddleLeft);
+                subject.Move(BoardPosition.MiddleRight);
+                subject.Move(BoardPosition.BottomMiddle);
+                subject.Move(BoardPosition.BottomLeft);
+                subject.Move(BoardPosition.TopLeft);
+                expectedTieBoard.Should().Be(subject.ToString());
             }
         }
     }

@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using System;
 
 namespace Codurance.Domain.Unit.Tests
 {

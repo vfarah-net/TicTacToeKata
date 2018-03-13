@@ -74,7 +74,7 @@ namespace Codurance.Domain.Unit.Tests
         }
 
         [TestFixture]
-        public class AndKeepingTheScore : WhenPlayingTickTackToe
+        public class AndKeepingTheWinningDetails : WhenPlayingTickTackToe
         {
             [Test]
             public void ShouldStartTheScoreOnZeroZeroForBothTeams()
@@ -99,9 +99,65 @@ namespace Codurance.Domain.Unit.Tests
                 });
                 ITicTacToeGame subject = fixture.Create<TicTacToeGame>();
 
-                gameFinished?.Invoke(new GameFinishedArgs(GameResult.Win, mockBoard.Object.PlayerOne));
+                gameFinished?.Invoke(new GameFinishedArgs(GameResult.Win, mockBoard.Object.PlayerOne, LineWin.RightDiagonal));
 
                 subject.Scores[mockBoard.Object.PlayerOne.Team].Should().Be(1);
+            }
+
+            [Test]
+            public void ShouldShowWhichTeamAndLineWonAndThatTheGameIsOver()
+            {
+                Action<GameFinishedArgs> gameFinished = null;
+                Team actualWinningTeam = Team.None;
+                LineWin actualLineWin = LineWin.None;
+#pragma warning disable CS0618
+                mockBoard.SetupSet(x => x.GameFinished).Callback((x) =>
+#pragma warning restore CS0618
+                {
+                    gameFinished = x;
+                });
+                ITicTacToeGame subject = fixture.Create<TicTacToeGame>();
+                subject.TeamAndLineWon += (ValueTuple<Team, LineWin> arg) =>
+                {
+                    actualWinningTeam = arg.Item1;
+                    actualLineWin = arg.Item2;
+                };
+                subject.IsGameOver.Should().BeFalse();
+
+                gameFinished?.Invoke(new GameFinishedArgs(GameResult.Win, mockBoard.Object.PlayerOne, LineWin.MiddleHorizontal));
+
+                actualWinningTeam.Should().Be(mockBoard.Object.PlayerOne.Team);
+                actualLineWin.Should().Be(LineWin.MiddleHorizontal);
+                subject.IsGameOver.Should().BeTrue();
+            }
+
+            [Test]
+            public void ShouldNotIncrementTheScoreWhenThereIsADraw()
+            {
+                Action<GameFinishedArgs> gameFinished = null;
+                Team actualWinningTeam = Team.None;
+                LineWin actualLineWin = LineWin.None;
+#pragma warning disable CS0618
+                mockBoard.SetupSet(x => x.GameFinished).Callback((x) =>
+#pragma warning restore CS0618
+                {
+                    gameFinished = x;
+                });
+                ITicTacToeGame subject = fixture.Create<TicTacToeGame>();
+                subject.TeamAndLineWon += (ValueTuple<Team, LineWin> arg) =>
+                {
+                    actualWinningTeam = arg.Item1;
+                    actualLineWin = arg.Item2;
+                };
+                subject.IsGameOver.Should().BeFalse();
+
+                gameFinished?.Invoke(new GameFinishedArgs(GameResult.Draw, null, LineWin.None));
+
+                subject.Scores[mockBoard.Object.PlayerOne.Team].Should().Be(0);
+                subject.Scores[mockBoard.Object.PlayerTwo.Team].Should().Be(0);
+                actualWinningTeam.Should().Be(Team.None);
+                actualLineWin.Should().Be(LineWin.None);
+                subject.IsGameOver.Should().BeTrue();
             }
         }
 
@@ -113,9 +169,9 @@ namespace Codurance.Domain.Unit.Tests
             {
                 Team activeTeam = Team.None;
                 Action<PlayerSwappedArgs> playerSwapped = null;
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable CS0618 
                 mockBoard.SetupSet(x => x.PlayerSwapped).Callback((x) =>
-#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore CS0618 
                 {
                     playerSwapped = x;
                 });

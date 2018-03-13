@@ -19,6 +19,22 @@ namespace Codurance.Domain
                 Team.None, Team.None, Team.None
             };
 
+        private readonly List<ValueTuple<BoardPosition[], LineWin>> winningPositions
+            = new List<ValueTuple<BoardPosition[], LineWin>>
+        {
+                // Horizontal Positions
+                {(new [] { BoardPosition.TopLeft, BoardPosition.TopMiddle, BoardPosition.TopRight }, LineWin.TopHorizontal)},
+                {(new [] { BoardPosition.MiddleLeft, BoardPosition.Middle, BoardPosition.MiddleRight}, LineWin.MiddleHorizontal)},
+                {(new [] { BoardPosition.BottomLeft, BoardPosition.BottomMiddle, BoardPosition.BottomRight}, LineWin.BottomHorizontal)},
+                // Vertical Positions
+                {(new [] { BoardPosition.TopLeft, BoardPosition.MiddleLeft, BoardPosition.BottomLeft }, LineWin.LeftVertical)},
+                {(new [] { BoardPosition.TopMiddle, BoardPosition.Middle, BoardPosition.BottomMiddle }, LineWin.MiddleVertical)},
+                {(new [] { BoardPosition.TopRight, BoardPosition.MiddleRight, BoardPosition.BottomRight }, LineWin.RightVertical)},
+                // Diagonal Positions
+                {(new [] { BoardPosition.TopLeft, BoardPosition.Middle, BoardPosition.BottomRight }, LineWin.LeftDiagonal)},
+                {(new [] { BoardPosition.TopRight, BoardPosition.Middle, BoardPosition.BottomLeft }, LineWin.RightDiagonal)},
+        };
+
         public Board(Team playerOneTeam = Team.Zero)
         {
             Reset(playerOneTeam);
@@ -56,10 +72,8 @@ namespace Codurance.Domain
             }
 
             boardPositions[(int)position] = ActivePlayer.Team;
-
             SwitchActivePlayer();
-
-            ResolveGameStatus();
+            CheckGameStatus();
             return true;
         }
 
@@ -81,6 +95,7 @@ namespace Codurance.Domain
 
             PlayerOne = new Player(playerOneTeam, playerOneTeam == Team.Zero, nameof(PlayerOne));
             PlayerTwo = new Player(playerTwoTeam, playerOneTeam == Team.Zero, nameof(PlayerTwo));
+            PlayerSwapped?.Invoke(new PlayerSwappedArgs(ActivePlayer));
         }
 
         public override string ToString()
@@ -101,77 +116,42 @@ namespace Codurance.Domain
             PlayerSwapped?.Invoke(new PlayerSwappedArgs(ActivePlayer));
         }
 
-        private bool ResolveGameStatus()
+        private void CheckGameStatus()
         {
-            var winners = HorizontalWinners().ToList();
-            if (winners.Any())
+            IList<Team> lines = new List<Team>();
+            foreach (var winningPosition in winningPositions)
             {
-                OnGameFinished(winners);
-                return true;
+                lines = GetEqualTeamLine(winningPosition.Item1);
+                if (lines.Any())
+                {
+                    OnGameFinished(lines, winningPosition.Item2);
+                }
             }
-            winners = VerticalWinners().ToList();
-            if (winners.Any())
-            {
-                OnGameFinished(winners);
-                return true;
-            }
-            winners = DiagonalWinners().ToList();
-            if (winners.Any())
-            {
-                OnGameFinished(winners);
-                return true;
-            }
+
             if (!AreThereAnyMoreMovesLeft)
             {
-                OnGameFinished(winners);
-                return true;
+                OnGameFinished(lines, LineWin.None);
             }
-            return false;
         }
 
-        private void OnGameFinished(IList<Team> winningValues)
+        private void OnGameFinished(IList<Team> winningValues, LineWin lineWin)
         {
             if (winningValues.Any())
             {
                 var winner = PlayerOne.Team == winningValues[0] ? PlayerOne : PlayerTwo;
-                GameFinished?.Invoke(new GameFinishedArgs(GameResult.Win, winner));
-                Debug.Write($"Game finished with team '{winner.Team} winning'");
+                GameFinished?.Invoke(new GameFinishedArgs(GameResult.Win, winner, lineWin));
+                Debug.WriteLine($"Game finished with team '{winner.Team}' winning");
             }
             else
             {
                 GameFinished?.Invoke(new GameFinishedArgs(GameResult.Draw));
-                Debug.Write("Game finished in a draw");
+                Debug.WriteLine("Game finished in a draw");
             }
-        }
-
-        private IEnumerable<Team> HorizontalWinners()
-        {
-            IList<Team> topHorizontalRow = GetEqualTeamLine(BoardPosition.TopLeft, BoardPosition.TopMiddle, BoardPosition.TopRight);
-            IList<Team> middleHorizontalRow = GetEqualTeamLine(BoardPosition.MiddleLeft, BoardPosition.Middle, BoardPosition.MiddleRight);
-            IList<Team> bottomHorizontalRow = GetEqualTeamLine(BoardPosition.BottomLeft, BoardPosition.BottomMiddle, BoardPosition.BottomRight);
-            return topHorizontalRow.Concat(middleHorizontalRow).Concat(bottomHorizontalRow);
-        }
-        private IEnumerable<Team> VerticalWinners()
-        {
-            IList<Team> leftVerticalRow = GetEqualTeamLine(BoardPosition.TopLeft, BoardPosition.MiddleLeft, BoardPosition.BottomLeft);
-            IList<Team> middleVerticalRow = GetEqualTeamLine(BoardPosition.TopMiddle, BoardPosition.Middle, BoardPosition.BottomMiddle);
-            IList<Team> rightVerticalRow = GetEqualTeamLine(BoardPosition.TopRight, BoardPosition.MiddleRight, BoardPosition.BottomRight);
-            return leftVerticalRow.Concat(middleVerticalRow).Concat(rightVerticalRow);
-        }
-
-        private IEnumerable<Team> DiagonalWinners()
-        {
-            IList<Team> leftDiagonalRow = GetEqualTeamLine(BoardPosition.TopLeft, BoardPosition.Middle, BoardPosition.BottomRight);
-            IList<Team> rightDiagonalRow = GetEqualTeamLine(BoardPosition.TopRight, BoardPosition.Middle, BoardPosition.BottomLeft);
-            return leftDiagonalRow.Concat(rightDiagonalRow);
+            Debug.WriteLine(this.ToString());
         }
 
         private IList<Team> GetEqualTeamLine(params BoardPosition[] positions)
         {
-            if (positions.Length != 3)
-            {
-                throw new ArgumentOutOfRangeException("You must have 3 positions to make a complete line");
-            }
             List<Team> result = new List<Team>();
             foreach (int position in positions)
             {

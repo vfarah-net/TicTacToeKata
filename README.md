@@ -11,7 +11,7 @@ There can only be two players and they alternate goes
 TDD or BDD for testing structure
 SOLID principles or clean code principles must always be applied
 KISS
-NO DRY or Anti patterns, atleast on the second version
+NO DRY or Anti patterns, at least on the second version
 NO Comments or little ideally
 Create unit test to prove all the scenarios
 Create either a console app, windows forms or web app to use the lib to demonstrate (No need to test this, just to visually display an interact with your library)

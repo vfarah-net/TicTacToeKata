@@ -4,12 +4,19 @@ namespace Codurance.Domain.Autofac
 {
     public class TickTacToeModule : Module
     {
+        private readonly Team playerOneTeam;
+
+        public TickTacToeModule(Team playerOneTeam)
+        {
+            this.playerOneTeam = playerOneTeam;
+        }
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<TicTacToeGame>()
+            builder.Register(x => new Board(playerOneTeam))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
-            builder.RegisterType<IBoard>()
+
+            builder.RegisterType<TicTacToeGame>()
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
         }

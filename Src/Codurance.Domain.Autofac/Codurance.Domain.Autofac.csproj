@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TickTacToeModule.cs" />
+    <Compile Include="TicTacToeFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Codurance.Domain\Codurance.Domain.csproj">

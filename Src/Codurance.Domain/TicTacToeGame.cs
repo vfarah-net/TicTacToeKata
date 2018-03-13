@@ -7,6 +7,7 @@ namespace Codurance.Domain
     public class TicTacToeGame : ITicTacToeGame
     {
         private readonly IBoard board;
+        private Dictionary<Team, int> scores;
 
         public TicTacToeGame(IBoard board)
         {
@@ -14,14 +15,18 @@ namespace Codurance.Domain
             Initialize();
         }
 
-        public Action<Dictionary<Team, int>> ScoreChanged { get; set; }
+        public Action<IReadOnlyDictionary<Team, int>> ScoreChanged { get; set; }
         public Action<Team> TeamChanged { get; set; }
+        public Action<ValueTuple<Team, LineWin>> TeamAndLineWon { get; set; }
 
-        public Dictionary<Team, int> Scores { get; private set; }
+        public IReadOnlyDictionary<Team, int> Scores { get { return scores; }}
+
+        public bool IsGameOver { get; private set; }
 
         public void Reset(Team playerOne = Team.Cross)
         {
             board.Reset(playerOne);
+            IsGameOver = false;
         }      
 
         public bool Move(BoardPosition position)
@@ -40,10 +45,16 @@ namespace Codurance.Domain
 
         private void OnGameFinished(GameFinishedArgs gameFinished)
         {
-            if(gameFinished.Result == GameResult.Win) {
+            IsGameOver = true;
+            if (gameFinished.Result == GameResult.Win) {
                 int currentScore = Scores[gameFinished.Winner.Team];                
-                Scores[gameFinished.Winner.Team] = currentScore + 1;
+                scores[gameFinished.Winner.Team] = currentScore + 1;
                 ScoreChanged?.Invoke(Scores);
+                TeamAndLineWon?.Invoke(new ValueTuple<Team, LineWin>(gameFinished.Winner.Team, gameFinished.LineWin));
+            }
+            else
+            {
+                TeamAndLineWon?.Invoke(new ValueTuple<Team, LineWin>(Team.None, LineWin.None));
             }
         }
 
@@ -56,12 +67,11 @@ namespace Codurance.Domain
         {
             board.GameFinished += OnGameFinished;
             board.PlayerSwapped += OnPlayerSwapped;
-            Scores = new Dictionary<Team, int>
+            scores = new Dictionary<Team, int>
             {
                 { board.PlayerOne.Team, 0 },
                 { board.PlayerTwo.Team, 0 }
             };
         }
-
     }
 }

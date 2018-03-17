@@ -45,15 +45,15 @@
   <ItemGroup>
     <Compile Include="Board.cs" />
     <Compile Include="ITicTacToeGame.cs" />
-    <Compile Include="Model\LineWin.cs" />
-    <Compile Include="Model\BoardPosition.cs" />
-    <Compile Include="EventArgs\GameFinishedArgs.cs" />
-    <Compile Include="Model\GameResult.cs" />
+    <Compile Include="LineWin.cs" />
+    <Compile Include="BoardPosition.cs" />
+    <Compile Include="GameFinishedArgs.cs" />
+    <Compile Include="GameResult.cs" />
     <Compile Include="IBoard.cs" />
-    <Compile Include="Model\IPlayer.cs" />
-    <Compile Include="EventArgs\PlayerSwappedArgs.cs" />
-    <Compile Include="Model\Team.cs" />
-    <Compile Include="Model\Player.cs" />
+    <Compile Include="IPlayer.cs" />
+    <Compile Include="PlayerSwappedArgs.cs" />
+    <Compile Include="Team.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="TicTacToeGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

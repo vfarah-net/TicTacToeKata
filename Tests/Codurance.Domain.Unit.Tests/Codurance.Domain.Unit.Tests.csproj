@@ -76,7 +76,7 @@
     <Compile Include="BoardTestFixture.cs" />
     <Compile Include="PlayerTestFixture.cs" />
     <Compile Include="TestHelper.cs" />
-    <Compile Include="TickTackToeGameTestFixture.cs" />
+    <Compile Include="TickTacToeGameTestFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

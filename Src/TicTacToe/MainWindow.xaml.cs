@@ -187,12 +187,12 @@ namespace TicTacToe
                         }
                     case LineWin.LeftDiagonal:
                         {
-                            SetupLeftDiagnol();
+                            SetupLeftDiagonol();
                             break;
                         }
                     case LineWin.RightDiagonal:
                         {
-                            SetupRightDiagnol();
+                            SetupRightDiagonol();
                             break;
                         }
                 }
@@ -200,7 +200,7 @@ namespace TicTacToe
             }                        
         }
 
-        private void SetupRightDiagnol()
+        private void SetupRightDiagonol()
         {            
             imgLine.Margin = new Thickness(50, 290, 0, 0);
             imgLine.RenderTransformOrigin = rotateFromMiddle;
@@ -208,7 +208,7 @@ namespace TicTacToe
             Grid.SetColumnSpan(imgLine, 2);
         }
 
-        private void SetupLeftDiagnol()
+        private void SetupLeftDiagonol()
         {            
             imgLine.Margin = new Thickness(50, 284, 0, 0);
             imgLine.RenderTransformOrigin = rotateFromMiddle;

@@ -2,7 +2,7 @@
 
 namespace Codurance.Domain
 {
-    public class PlayerSwappedArgs : EventArgs
+    public class PlayerSwappedArgs
     {
         public PlayerSwappedArgs(IPlayer currentPlayer)
         {

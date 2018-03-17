@@ -17,7 +17,7 @@ namespace Codurance.Domain
 
         public override bool Equals(object obj)
         {
-            if(obj == null)
+            if (obj == null)
             {
                 return false;
             }
@@ -41,6 +41,21 @@ namespace Codurance.Domain
             return player.Team.GetHashCode() ^
                 player.IsActive.GetHashCode() ^
                 player.Name.GetHashCode();
+        }
+
+        public static bool operator ==(Player left, Player right)
+        {
+            if (ReferenceEquals(left, null))
+            {
+                return ReferenceEquals(left, null);
+            }
+
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Player left, Player right)
+        {
+            return !(left == right);
         }
     }
 }

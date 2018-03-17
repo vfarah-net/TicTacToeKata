@@ -2,7 +2,7 @@
 
 namespace Codurance.Domain
 {
-    public class GameFinishedArgs: EventArgs
+    public class GameFinishedArgs
     {
         public GameFinishedArgs(
             GameResult result, 

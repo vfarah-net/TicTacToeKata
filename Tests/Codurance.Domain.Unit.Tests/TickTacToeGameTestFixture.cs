@@ -47,15 +47,13 @@ namespace Codurance.Domain.Unit.Tests
         [TestFixture]
         public class AndResettingTheGame : WhenPlayingTickTackToe
         {
-            [TestCase(Team.Cross)]
-            [TestCase(Team.Zero)]
-            public void ShouldResetTheBoardWithPlayerOneSetAsCross(Team playerOneTeam)
+            public void ShouldResetTheBoardWithPlayerOneSetAsCross()
             {
                 ITicTacToeGame subject = fixture.Create<TicTacToeGame>();
 
-                subject.Reset(playerOneTeam);
+                subject.Reset();
 
-                mockBoard.Verify(x => x.Reset(It.Is<Team>(playerOne => playerOne == playerOneTeam)), Times.Once);
+                mockBoard.Verify(x => x.Reset(It.IsAny<Team>()), Times.Once);
             }
         }
 
@@ -89,14 +87,12 @@ namespace Codurance.Domain.Unit.Tests
             public void ShouldIncrementTheScoreWhenATeamWins()
             {
                 Action<GameFinishedArgs> gameFinished = null;
-                // Cant get it to work with new methods because of
-                // https://github.com/moq/moq4/issues/218
-#pragma warning disable CS0618 // Type or member is obsolete
-                mockBoard.SetupSet(x => x.GameFinished).Callback((x) =>
-#pragma warning restore CS0618 // Type or member is obsolete
+                mockBoard.SetupSet<Action<GameFinishedArgs>>(x => x.GameFinished = It.IsAny<Action<GameFinishedArgs>>())
+                    .Callback((x) =>
                 {
                     gameFinished = x;
                 });
+
                 ITicTacToeGame subject = fixture.Create<TicTacToeGame>();
 
                 gameFinished?.Invoke(new GameFinishedArgs(GameResult.Win, mockBoard.Object.PlayerOne, LineWin.RightDiagonal));
@@ -105,17 +101,62 @@ namespace Codurance.Domain.Unit.Tests
             }
 
             [Test]
-            public void ShouldShowWhichTeamAndLineWonAndThatTheGameIsOver()
+            public void ShouldShowWhichTeamWon()
             {
                 Action<GameFinishedArgs> gameFinished = null;
                 Team actualWinningTeam = Team.None;
                 LineWin actualLineWin = LineWin.None;
-#pragma warning disable CS0618
-                mockBoard.SetupSet(x => x.GameFinished).Callback((x) =>
-#pragma warning restore CS0618
+                mockBoard.SetupSet<Action<GameFinishedArgs>>(x => x.GameFinished = It.IsAny<Action<GameFinishedArgs>>())
+                    .Callback((x) =>
                 {
                     gameFinished = x;
                 });
+                ITicTacToeGame subject = fixture.Create<TicTacToeGame>();
+                subject.TeamAndLineWon += (ValueTuple<Team, LineWin> arg) =>
+                {
+                    actualWinningTeam = arg.Item1;
+                    actualLineWin = arg.Item2;
+                };
+
+                gameFinished?.Invoke(new GameFinishedArgs(GameResult.Win, mockBoard.Object.PlayerOne, LineWin.MiddleHorizontal));
+
+                actualWinningTeam.Should().Be(mockBoard.Object.PlayerOne.Team);
+            }
+
+            [Test]
+            public void ShouldShowWhichLineWon()
+            {
+                Action<GameFinishedArgs> gameFinished = null;
+                Team actualWinningTeam = Team.None;
+                LineWin actualLineWin = LineWin.None;
+                mockBoard.SetupSet<Action<GameFinishedArgs>>(x => x.GameFinished = It.IsAny<Action<GameFinishedArgs>>())
+                    .Callback((x) =>
+                    {
+                        gameFinished = x;
+                    });
+                ITicTacToeGame subject = fixture.Create<TicTacToeGame>();
+                subject.TeamAndLineWon += (ValueTuple<Team, LineWin> arg) =>
+                {
+                    actualWinningTeam = arg.Item1;
+                    actualLineWin = arg.Item2;
+                };
+
+                gameFinished?.Invoke(new GameFinishedArgs(GameResult.Win, mockBoard.Object.PlayerOne, LineWin.MiddleHorizontal));
+
+                actualLineWin.Should().Be(LineWin.MiddleHorizontal);
+            }
+
+            [Test]
+            public void ShouldShowTheGameIsOver()
+            {
+                Action<GameFinishedArgs> gameFinished = null;
+                Team actualWinningTeam = Team.None;
+                LineWin actualLineWin = LineWin.None;
+                mockBoard.SetupSet<Action<GameFinishedArgs>>(x => x.GameFinished = It.IsAny<Action<GameFinishedArgs>>())
+                    .Callback((x) =>
+                    {
+                        gameFinished = x;
+                    });
                 ITicTacToeGame subject = fixture.Create<TicTacToeGame>();
                 subject.TeamAndLineWon += (ValueTuple<Team, LineWin> arg) =>
                 {
@@ -126,10 +167,9 @@ namespace Codurance.Domain.Unit.Tests
 
                 gameFinished?.Invoke(new GameFinishedArgs(GameResult.Win, mockBoard.Object.PlayerOne, LineWin.MiddleHorizontal));
 
-                actualWinningTeam.Should().Be(mockBoard.Object.PlayerOne.Team);
-                actualLineWin.Should().Be(LineWin.MiddleHorizontal);
                 subject.IsGameOver.Should().BeTrue();
             }
+
 
             [Test]
             public void ShouldNotIncrementTheScoreWhenThereIsADraw()
@@ -137,9 +177,8 @@ namespace Codurance.Domain.Unit.Tests
                 Action<GameFinishedArgs> gameFinished = null;
                 Team actualWinningTeam = Team.None;
                 LineWin actualLineWin = LineWin.None;
-#pragma warning disable CS0618
-                mockBoard.SetupSet(x => x.GameFinished).Callback((x) =>
-#pragma warning restore CS0618
+                mockBoard.SetupSet<Action<GameFinishedArgs>>(x => x.GameFinished = It.IsAny<Action<GameFinishedArgs>>())
+                .Callback((x) =>
                 {
                     gameFinished = x;
                 });
@@ -157,7 +196,6 @@ namespace Codurance.Domain.Unit.Tests
                 subject.Scores[mockBoard.Object.PlayerTwo.Team].Should().Be(0);
                 actualWinningTeam.Should().Be(Team.None);
                 actualLineWin.Should().Be(LineWin.None);
-                subject.IsGameOver.Should().BeTrue();
             }
         }
 
@@ -169,9 +207,8 @@ namespace Codurance.Domain.Unit.Tests
             {
                 Team activeTeam = Team.None;
                 Action<PlayerSwappedArgs> playerSwapped = null;
-#pragma warning disable CS0618 
-                mockBoard.SetupSet(x => x.PlayerSwapped).Callback((x) =>
-#pragma warning restore CS0618 
+                mockBoard.SetupSet<Action<PlayerSwappedArgs>>(x => x.PlayerSwapped = It.IsAny<Action<PlayerSwappedArgs>>())
+                .Callback((x) =>
                 {
                     playerSwapped = x;
                 });

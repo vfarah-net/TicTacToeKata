@@ -23,9 +23,9 @@ namespace Codurance.Domain
 
         public bool IsGameOver { get; private set; }
 
-        public void Reset(Team playerOne = Team.Cross)
+        public void Reset()
         {
-            board.Reset(playerOne);
+            board.Reset();
             IsGameOver = false;
         }      
 

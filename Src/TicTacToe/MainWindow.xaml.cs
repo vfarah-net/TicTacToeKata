@@ -1,5 +1,4 @@
 ﻿using Codurance.Domain;
-using Codurance.Domain.Autofac;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -31,10 +30,13 @@ namespace TicTacToe
         private readonly BitmapImage bitmapZeroLine = new BitmapImage();
         private readonly BitmapImage bitmapCrossLine = new BitmapImage();
 
-        public MainWindow()
+        public MainWindow(ITicTacToeGame ticTacToeGame)
         {
+            this.ticTacToeGame = ticTacToeGame;            
+            ticTacToeGame.ScoreChanged += OnScoreChanged;
+            ticTacToeGame.TeamAndLineWon += OnTeamAndLineWon;
+            ticTacToeGame.TeamChanged += OnTeamChanged;
             InitializeComponent();
-            InitializeTicTacToeGame();
             InitializeBitmapImages();
             OnTeamChanged(currentTeam);
             ClearImages();
@@ -76,14 +78,6 @@ namespace TicTacToe
             bitmapCrossLine.EndInit();
         }
 
-        private void InitializeTicTacToeGame()
-        {
-            this.ticTacToeGame = TicTacToeFactory.Create(Team.Zero);
-            ticTacToeGame.ScoreChanged += OnScoreChanged;
-            ticTacToeGame.TeamAndLineWon += OnTeamAndLineWon;
-            ticTacToeGame.TeamChanged += OnTeamChanged;
-        }
-
         private void OnTeamChanged(Team team)
         {
             this.currentTeam = team;
@@ -101,7 +95,7 @@ namespace TicTacToe
         {
 
             ClearImages();
-            ticTacToeGame.Reset(Team.Zero);
+            ticTacToeGame.Reset();
             btnReset.Visibility = Visibility.Collapsed;
             HideLine();
         }

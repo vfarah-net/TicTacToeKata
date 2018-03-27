@@ -12,7 +12,7 @@ namespace Codurance.Domain
         IReadOnlyDictionary<Team, int> Scores { get; }
 
         bool Move(BoardPosition position);
-        void Reset(Team playerOne = Team.Cross);
+        void Reset();
         string ToString();
     }
 }

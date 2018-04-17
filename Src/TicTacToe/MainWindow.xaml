@@ -32,7 +32,7 @@
         <Label x:Name="lblTeamZero" Content="Team Zero" Margin="22,112,261.868,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White" FontSize="16" Height="31"/>
         <Label x:Name="lblTeamZeroScore" Content="0" HorizontalAlignment="Left" Margin="118,112,0,0" VerticalAlignment="Top" Width="29" Foreground="White" FontSize="16" FontWeight="Bold" Height="31"/>
         <Label x:Name="lblTeamCross" Content="Team Cross" Margin="254,112,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White" FontSize="16" HorizontalAlignment="Left" Width="116" Height="31"/>
-        <Label x:Name="lblTeamCrossScore" Content="0" HorizontalAlignment="Left" Margin="351,112,0,0" VerticalAlignment="Top" Foreground="White" FontSize="16" FontWeight="Bold" Height="31" Width="19"/>
+        <Label x:Name="lblTeamCrossScore" Content="0" HorizontalAlignment="Left" Margin="351,112,0,0" VerticalAlignment="Top" Foreground="White" FontSize="16" FontWeight="Bold" Height="31" Width="34"/>
         <Image x:Name="imgCurrentTeam" HorizontalAlignment="Left" Height="30" Margin="203,112,0,0" VerticalAlignment="Top" Width="33" Source="pack://siteoforigin:,,,/Images/Naught.png" ForceCursor="True" Cursor="None"/>
         <Button x:Name="btnReset" Content="Play again" HorizontalAlignment="Left" Margin="163,112,0,0" VerticalAlignment="Top" Width="75" Height="30" Click="btnReset_Click" Visibility="Collapsed"/>
         <Image x:Name="imgLine" HorizontalAlignment="Left" Height="13" Margin="50,284,0,0" VerticalAlignment="Top" Width="291" Source="pack://siteoforigin:,,,/Images/ZeroLine.png" Visibility="Collapsed" RenderTransformOrigin="0.5,0.5" Stretch="Uniform">

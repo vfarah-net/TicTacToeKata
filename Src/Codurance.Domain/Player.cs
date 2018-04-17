@@ -45,12 +45,8 @@ namespace Codurance.Domain
 
         public static bool operator ==(Player left, Player right)
         {
-            if (ReferenceEquals(left, null))
-            {
-                return ReferenceEquals(left, null);
-            }
-
-            return left.Equals(right);
+            bool isPlayerNull = ReferenceEquals(left, null);
+            return isPlayerNull ? isPlayerNull : left.Equals(right);
         }
 
         public static bool operator !=(Player left, Player right)

@@ -243,7 +243,7 @@ namespace Codurance.Domain.Unit.Tests
                 gameFinishedArgument.LineWin.Should().Be(LineWin.RightVertical);
             }
 
-            private void MakeTheRightVerticalRowOfZerosTheWinner(IBoard subject)
+            private static void MakeTheRightVerticalRowOfZerosTheWinner(IBoard subject)
             {
                 string expectedRightVerticalWinnerBoard =
                     "- | X | 0".NewRow() +
@@ -257,7 +257,7 @@ namespace Codurance.Domain.Unit.Tests
                 expectedRightVerticalWinnerBoard.Should().Be(subject.ToString());
             }
 
-            private void MakeTheMiddleVerticalRowOfZerosTheWinner(IBoard subject)
+            private static void MakeTheMiddleVerticalRowOfZerosTheWinner(IBoard subject)
             {
                 string expectedMiddleVerticalWinnerBoard =
                     "X | 0 | -".NewRow() +

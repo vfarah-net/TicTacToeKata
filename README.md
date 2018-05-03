@@ -15,3 +15,9 @@ https://en.wikipedia.org/wiki/Tic-tac-toe for defining your domain rules and pos
 * NO Comments or little ideally
 * Create unit test to prove all the scenarios
 * Create either a console app, windows forms or web app to use the lib to demonstrate (No need to test this, just to visually display an interact with your library)
+
+# TODO
+* Refactor UI to cater for ViewModel
+* Generate ViewModel Base with commands
+* Generate commands to support actions
+* Create tests for the view model

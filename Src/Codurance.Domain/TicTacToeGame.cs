@@ -36,7 +36,7 @@ namespace Codurance.Domain
 
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.AppendLine($"Crosses : {Scores[Team.Cross]}");
             builder.AppendLine($"Zeros : {Scores[Team.Zero]}");
             builder.AppendLine(board.ToString());

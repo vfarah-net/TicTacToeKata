@@ -19,7 +19,7 @@ namespace TicTacToe
     /// </remarks>
     public partial class MainWindow : Window
     {
-        private ITicTacToeGame ticTacToeGame;
+        private readonly ITicTacToeGame ticTacToeGame;
         private Team currentTeam = Team.Zero;
         private readonly RotateTransform rotateVertically = new RotateTransform(90.00);
         private readonly RotateTransform rotateLeftDiagnol = new RotateTransform(-135.00);
@@ -44,13 +44,6 @@ namespace TicTacToe
             InitializeBitmapImages();
             OnTeamChanged(currentTeam);
             ClearImages();
-        }
-
-        ~MainWindow()
-        {
-            ticTacToeGame.ScoreChanged -= OnScoreChanged;
-            ticTacToeGame.TeamAndLineWon -= OnTeamAndLineWon;
-            ticTacToeGame.TeamChanged -= OnTeamChanged;
         }
 
         private void ClearImages()
@@ -120,8 +113,7 @@ namespace TicTacToe
         private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (ticTacToeGame.IsGameOver) return;
-            var image = (sender as Image);
-            if (image != null)
+            if (sender is Image image)
             {                
                 var currentTeamBitmap = currentTeam == Team.Zero ? bitmapImageTeamZero : bitmapImageTeamCross;
                 if(Enum.TryParse(image.Uid, out BoardPosition position))
@@ -200,6 +192,8 @@ namespace TicTacToe
                             SetupRightDiagonol();
                             break;
                         }
+                    case LineWin.None:
+                        break;
                 }
                 imgLine.Visibility = Visibility.Visible;
             }                        

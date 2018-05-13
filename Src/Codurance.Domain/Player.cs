@@ -17,11 +17,7 @@ namespace Codurance.Domain
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-            return this.Equals(this, (Player)obj);
+            return obj != null && this.Equals(this, (Player)obj);
         }
 
         public override int GetHashCode()

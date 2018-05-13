@@ -100,7 +100,7 @@ namespace Codurance.Domain
 
         public override string ToString()
         {
-            StringBuilder logger = new StringBuilder();
+            var logger = new StringBuilder();
             logger.AppendLine($"{BoardPositions[0].AsChar()} | {BoardPositions[1].AsChar()} | {BoardPositions[2].AsChar()}");
             logger.AppendLine($"{BoardPositions[3].AsChar()} | {BoardPositions[4].AsChar()} | {BoardPositions[5].AsChar()}");
             logger.AppendLine($"{BoardPositions[6].AsChar()} | {BoardPositions[7].AsChar()} | {BoardPositions[8].AsChar()}");
@@ -152,11 +152,7 @@ namespace Codurance.Domain
 
         private IList<Team> GetEqualTeamLine(params BoardPosition[] positions)
         {
-            List<Team> result = new List<Team>();
-            foreach (int position in positions)
-            {
-                result.Add(boardPositions[position]);
-            }
+            List<Team> result = (from int position in positions select boardPositions[position]).ToList();
             var allEqualAndAValidTeam =
                 result[0] != Team.None &&
                 result[0] == result[1] &&

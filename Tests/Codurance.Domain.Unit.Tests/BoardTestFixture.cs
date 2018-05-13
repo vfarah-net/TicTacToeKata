@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
+using static System.Environment;
 
 namespace Codurance.Domain.Unit.Tests
 {
@@ -149,9 +150,9 @@ namespace Codurance.Domain.Unit.Tests
             private void MakeTheBottomRowOfZerosTheWinner(IBoard subject)
             {
                 string expectedBottomRowWinnerBoard =
-                    "- | - | -".NewRow() +
-                    "X | X | -".NewRow() +
-                    "0 | 0 | 0".NewRow();
+                    "- | - | -" + NewLine +
+                    "X | X | -" + NewLine +
+                    "0 | 0 | 0" + NewLine;
                 subject.Move(BoardPosition.BottomLeft);
                 subject.Move(BoardPosition.MiddleLeft);
                 subject.Move(BoardPosition.BottomMiddle);
@@ -163,9 +164,9 @@ namespace Codurance.Domain.Unit.Tests
             private void MakeTheMiddleRowOfZerosTheWinner(IBoard subject)
             {
                 string expectedMiddleRowWinnerBoard =
-                    "X | X | -".NewRow() +
-                    "0 | 0 | 0".NewRow() +
-                    "- | - | -".NewRow();
+                    "X | X | -" + NewLine +
+                    "0 | 0 | 0" + NewLine +
+                    "- | - | -" + NewLine;
                 subject.Move(BoardPosition.MiddleLeft);
                 subject.Move(BoardPosition.TopLeft);
                 subject.Move(BoardPosition.Middle);
@@ -177,9 +178,9 @@ namespace Codurance.Domain.Unit.Tests
             private static void MakeTheTopRowOfZerosTheWinner(IBoard subject)
             {
                 string expectedTopRowWinnerBoard =
-                    "0 | 0 | 0".NewRow() +
-                    "X | X | -".NewRow() +
-                    "- | - | -".NewRow();
+                    "0 | 0 | 0" + NewLine +
+                    "X | X | -" + NewLine +
+                    "- | - | -" + NewLine;
                 subject.Move(BoardPosition.TopLeft);
                 subject.Move(BoardPosition.MiddleLeft);
                 subject.Move(BoardPosition.TopMiddle);
@@ -246,9 +247,9 @@ namespace Codurance.Domain.Unit.Tests
             private static void MakeTheRightVerticalRowOfZerosTheWinner(IBoard subject)
             {
                 string expectedRightVerticalWinnerBoard =
-                    "- | X | 0".NewRow() +
-                    "- | X | 0".NewRow() +
-                    "- | - | 0".NewRow();
+                    "- | X | 0" + NewLine +
+                    "- | X | 0" + NewLine +
+                    "- | - | 0" + NewLine;
                 subject.Move(BoardPosition.TopRight);
                 subject.Move(BoardPosition.Middle);
                 subject.Move(BoardPosition.MiddleRight);
@@ -260,9 +261,9 @@ namespace Codurance.Domain.Unit.Tests
             private static void MakeTheMiddleVerticalRowOfZerosTheWinner(IBoard subject)
             {
                 string expectedMiddleVerticalWinnerBoard =
-                    "X | 0 | -".NewRow() +
-                    "X | 0 | -".NewRow() +
-                    "- | 0 | -".NewRow();
+                    "X | 0 | -" + NewLine +
+                    "X | 0 | -" + NewLine +
+                    "- | 0 | -" + NewLine;
                 subject.Move(BoardPosition.TopMiddle);
                 subject.Move(BoardPosition.TopLeft);
                 subject.Move(BoardPosition.Middle);
@@ -274,9 +275,9 @@ namespace Codurance.Domain.Unit.Tests
             private static void MakeTheLeftVerticalRowOfZerosTheWinner(IBoard subject)
             {
                 string expectedRightVerticalWinnerBoard =
-                    "0 | X | -".NewRow() +
-                    "0 | X | -".NewRow() +
-                    "0 | - | -".NewRow();
+                    "0 | X | -" + NewLine +
+                    "0 | X | -" + NewLine +
+                    "0 | - | -" + NewLine;
                 subject.Move(BoardPosition.TopLeft);
                 subject.Move(BoardPosition.Middle);
                 subject.Move(BoardPosition.MiddleLeft);
@@ -326,9 +327,9 @@ namespace Codurance.Domain.Unit.Tests
             private void MakeTheRightDiagonalRowOfZerosTheWinner(IBoard subject)
             {
                 string expectedRightDiagonalWinnerBoard =
-                    "X | - | 0".NewRow() +
-                    "X | 0 | -".NewRow() +
-                    "0 | - | -".NewRow();
+                    "X | - | 0" + NewLine +
+                    "X | 0 | -" + NewLine +
+                    "0 | - | -" + NewLine;
                 subject.Move(BoardPosition.TopRight);
                 subject.Move(BoardPosition.MiddleLeft);
                 subject.Move(BoardPosition.Middle);
@@ -339,9 +340,9 @@ namespace Codurance.Domain.Unit.Tests
             private static void MakeTheLeftDiagonalRowOfZerosTheWinner(IBoard subject)
             {
                 string expectedLeftDiagonalWinnerBoard =
-                    "0 | X | X".NewRow() +
-                    "- | 0 | -".NewRow() +
-                    "- | - | 0".NewRow();
+                    "0 | X | X" + NewLine +
+                    "- | 0 | -" + NewLine +
+                    "- | - | 0" + NewLine;
                 subject.Move(BoardPosition.TopLeft);
                 subject.Move(BoardPosition.TopMiddle);
                 subject.Move(BoardPosition.Middle);
@@ -372,9 +373,9 @@ namespace Codurance.Domain.Unit.Tests
             private void SetupTheBoardForADraw(IBoard subject)
             {
                 string expectedTieBoard =
-                    "0 | X | 0".NewRow() +
-                    "0 | 0 | X".NewRow() +
-                    "X | 0 | X".NewRow();
+                    "0 | X | 0" + NewLine +
+                    "0 | 0 | X" + NewLine +
+                    "X | 0 | X" + NewLine;
                 subject.Move(BoardPosition.Middle);
                 subject.Move(BoardPosition.TopMiddle);
                 subject.Move(BoardPosition.TopRight);
